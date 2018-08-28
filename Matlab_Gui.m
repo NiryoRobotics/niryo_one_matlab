@@ -42,7 +42,7 @@ function varargout = Matlab_Gui(varargin)
 
 % Edit the above text to modify the response to help Matlab_Gui
 
-% Last Modified by GUIDE v2.5 06-Apr-2018 16:02:23
+% Last Modified by GUIDE v2.5 03-May-2018 14:15:39
 
 % Begin initialization code - DO NOT EDIT
 
@@ -149,7 +149,7 @@ function commandButton_Callback(hObject, ~, handles)
    if handles.connexion_state ==0
        return; 
    end 
-  hw_status_msg=receive(handles.hw_status,10);% receiv ehardware status msg 
+  hw_status_msg=receive(handles.hw_status,10);% receive hardware status msg 
     if (hw_status_msg.CalibrationNeeded==0) && (hw_status_msg.CalibrationInProgress==false) % get calibrationNeeded flag 
        set(handles.motorbutton,'visible','off');
        set(handles.newCalibrationButton,'visible','on');
@@ -227,6 +227,7 @@ function hwButton_Callback(hObject, eventdata, handles)
    logs=logs+ newline+ "Get hardware status";
     set(handles.edit21,'string', hw_status_msg.RpiTemperature);
     set(handles.edit22,'string', hw_status_msg.CalibrationNeeded);
+    set(handles.version,'string', 'V'+string(hw_status_msg.HardwareVersion));
     % set(handles.edit20,'string', hw_status_msg.CalibrationInProgress);
     get_hardware_status_motors(handles,hw_status_msg);
     guidata(hObject,handles);
@@ -269,13 +270,16 @@ function connect_Callback(hObject, eventdata, handles)
         logs="connected to niryo one";
         % hardware status
             try 
-            hw_status=rossubscriber('/niryo_one/hardware_status'); %create a subscriber for  hardware statuts topic
-            handles.hw_status=hw_status;
+                hw_status=rossubscriber('/niryo_one/hardware_status'); %create a subscriber for  hardware statuts topic
+                handles.hw_status=hw_status;
+                hw_status_msg=receive(handles.hw_status,10);
+                handles.Hardware_version = hw_status_msg.HardwareVersion
             catch e 
                 logs= e.message;
                 rosshutdown;
                 return; 
             end 
+           
         % learning mode 
         handles.learning_mode_client=rossvcclient('/niryo_one/activate_learning_mode');% create a ros service client for activate learning mode 
         handles.learning_mode_req = rosmessage(handles.learning_mode_client); % create message for  learning_mode_client
@@ -345,8 +349,7 @@ function moveButton_Callback(hObject, eventdata, handles)
         return; 
    end
     set(handles.moveButton,'BackgroundColor',[0.1,0.67,0.89],'ForegroundColor','white');
-    [validation,joint]=validate_joints(handles,handles.Learning_mode_state,logs) ;
-
+   [validation,joint]=validate_joints(handles,handles.Learning_mode_state,logs,handles.Hardware_version) ;
     if validation==0
         return ; 
     end
@@ -439,36 +442,38 @@ function jointGroup_SelectionChangedFcn(hObject, eventdata, handles)
         logs=logs+newline+"you should connect to you robot first"; 
     return;
     end 
-    [theor_time,thero_y,real_time,real_y,diff_y,imported_data]=get_trajectories(thero_trajectory,real_trajectory,diff_trajectory,imported_data,time,jointStateMsg,thero_trajectory_data);
-   
-   
-   handles.theor_time=theor_time;
-   handles.thero_y=thero_y;
-   handles.real_time=real_time;
-   handles.real_y=real_y;
-   handles.diff_y=diff_y;
-    switch get(get(handles.jointGroup,'SelectedObject'),'Tag')   % Get Tag of selected object
-        case 'radiobutton7'
-          %execute this code when fontsize08_radiobutton is selected
-          plot_graphs(handles,handles.real_time,handles.theor_time, handles.diff_y,handles.thero_y,handles.real_y,1,-3.1,3.1);
-        case 'radiobutton8'
-          %joint2
-          plot_graphs(handles,real_time,theor_time,diff_y,thero_y,real_y,2,-1.7,1.7);
-        case 'radiobutton9'
-          %joint3
-           plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,3,-1.6,1.1);
-    case 'radiobutton10'
-          %joint4
-        plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,4,-2.8,2.8);
-        case 'radiobutton11'
-          % joint5
-         plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,5,-2.5,2.5);
-        case 'radiobutton12'
-         %joint6
-          plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,6,-2.8,2.8);
-        otherwise
-    end
-    guidata(hObject, handles);
+    try 
+        [theor_time,thero_y,real_time,real_y,diff_y,imported_data]=get_trajectories(thero_trajectory,real_trajectory,diff_trajectory,imported_data,time,jointStateMsg,thero_trajectory_data);
+        handles.theor_time=theor_time;
+        handles.thero_y=thero_y;
+        handles.real_time=real_time;
+        handles.real_y=real_y;
+        handles.diff_y=diff_y;
+        switch get(get(handles.jointGroup,'SelectedObject'),'Tag')   % Get Tag of selected object
+            case 'radiobutton7'
+            %execute this code when fontsize08_radiobutton is selected
+                plot_graphs(handles,handles.real_time,handles.theor_time, handles.diff_y,handles.thero_y,handles.real_y,1,-3.1,3.1);
+            case 'radiobutton8'
+            %joint2
+                plot_graphs(handles,real_time,theor_time,diff_y,thero_y,real_y,2,-1.7,1.7);
+            case 'radiobutton9'
+             %joint3
+                plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,3,-1.6,1.1);
+            case 'radiobutton10'
+                %joint4
+                plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,4,-2.8,2.8);
+            case 'radiobutton11'
+            % joint5
+                plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,5,-2.5,2.5);
+            case 'radiobutton12'
+            %joint6
+               plot_graphs(handles,handles.real_time,handles.theor_time,handles.diff_y,handles.thero_y,handles.real_y,6,-2.8,2.8);
+            otherwise
+        end
+    catch 
+        disp('error, try to get data first ') 
+    end 
+       guidata(hObject, handles);
   
 % --- Executes on button press in trajectoryButton. 
 % on plot Panel 
@@ -659,11 +664,12 @@ function figurebutton_Callback(~, eventdata, handles)
                 title('joint 6 trajectory');
             otherwise
         end
-    catch e 
+    catch 
         disp("there is no data to plot");
     end
-
 % % --- Executes on button press in checkbox1.
 function checkbox1_Callback(hObject, eventdata, handles)
  
     jointGroup_SelectionChangedFcn(hObject, eventdata, handles);
+
+

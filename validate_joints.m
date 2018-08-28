@@ -13,7 +13,7 @@
 % this function test if joints puted by the user are in rangs % 
 
 
-function [validation,joint]=validate_joints(handles,Learning_mode_state,logs) 
+function [validation,joint]=validate_joints(handles,Learning_mode_state,logs, Hardware_version) 
     
     % read joints value form text box 
     joint(1)=str2double(get(handles.joint1,'String'));
@@ -22,8 +22,14 @@ function [validation,joint]=validate_joints(handles,Learning_mode_state,logs)
     joint(4)=str2double(get(handles.joint4,'String'));
     joint(5)=str2double(get(handles.joint5,'String'));
     joint(6)=str2double(get(handles.joint6,'String'));
-    joint_max=[3.054,0.628319,0.994838,2.61799,2.26893,2.57]
-    joint_min=[-3.054,-1.5707,-1.4101,-2.61799,-2.26893,-2.57]
+    % check which robot version 
+    if(Hardware_version == 1 )
+        joint_max=[3.054,0.628319,0.994838,2.61799,2.26893,2.57]
+        joint_min=[-3.054,-1.5707,-1.4101,-2.61799,-2.26893,-2.57]
+    else 
+        joint_max=[3.054,0.628319,0.994838,2.61799,2.26893,2.57]
+        joint_min=[-3.054,-1.5707,-1.4101,-2.61799,-2.26893,-2.57]
+    end 
     validation=0;
     Learning_mode_state_msg=receive( Learning_mode_state); 
     if (Learning_mode_state_msg.Data==1)
