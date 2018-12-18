@@ -6,7 +6,7 @@ This interface connects Niryo-one to MATLAB to analyze differences between plann
 
 In this application, we can compare  between the 2 differnet trajectories by ploting them as shown below.
 
-![Matlab graph](./screenshot/trajectories_graphs.JPG)
+![Matlab graph](./screenshot/trajectories_graphs.png)
 
 this project connect to[ niryo one ros](https://github.com/NiryoRobotics/niryo_one_ros)
 ## list of Niryo One -MATLAB inetface functionality :  
