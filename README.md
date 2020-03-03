@@ -49,7 +49,7 @@ Then Choose Robotics System Toolbox Interface for ROS Custom Messages and click 
 
 *N.B. If you have  MATLAB R2017a and earlier versions, you have to follow this [Bug Reports](https://fr.mathworks.com/login?uri=https%3A%2F%2Ffr.mathworks.com%2Fsupport%2Fbugreports%2F1741173%3Fnocookie%3Dtrue%26requestedDomain%3Dtrue)*
 
-###### 1.2.1 Create Custom Messages from ROS Package 
+###### 1.2.2 Create Custom Messages from ROS Package 
 You can follow this [tutorial](https://fr.mathworks.com/help/robotics/ug/create-custom-messages-from-ros-package.html).
 
  **In windows** , clone [niryo one ros](https://github.com/NiryoRobotics/niryo_one_ros.git) and note the folderpath
@@ -102,8 +102,8 @@ niryo_one_msgs/JoystickJointsAction
 
 ###### 1.2.3 Connect ROS-MATLAB to ROS robot as a master
 - Find the name of your hostname 
-**In windows**, open cmd window and type hostname e.g. WINDOWSPC) 
-**In Raspberry Pi**, type  hostname -I (e.g. ROBOTPC) 
+**In windows**, open cmd window and type hostname (e.g. WINDOWSPC) 
+ **In Raspberry Pi**, type  hostname -I (e.g. ROBOTPC) 
 
 -Look for IP_ address of robot and matlab computer, they should had the same mask 255.255.255.0
 e.g. 
@@ -111,7 +111,7 @@ e.g.
 192.168.65.82 %  <ROBOTIP>
 192.168.65.80 % <WINDOWSPCIP>
 ```
-- Edit file C:\Windows\system32\drivers\etc\hosts **in windows**  and  /etc/hosts ** in Raspberry Pi** by adding those two lines : 
+- Edit file "C:\Windows\system32\drivers\etc\hosts" **in windows**  and  "/etc/hosts" **in Raspberry Pi** by adding those two lines : 
 
 ``` 
 192.168.65.82	 <ROBOTPC>
@@ -131,7 +131,7 @@ Restart your computer
  Restart your robot 
 
 -  try to ping both windows pc and the robot
-For more information:[RosNetworkSetup] (http://wiki.ros.org/ROS/NetworkSetup)
+For more information:[RosNetworkSetup](http://wiki.ros.org/ROS/NetworkSetup)
 on **matlab window** command
   
 > !ping ROBOTIP
@@ -155,7 +155,7 @@ Reply from<ROBOTIP>: bytes=32 time=4ms TTL=64
 *N.B. the last step is not necessary , cause it s already in matlab code*
 
 ### 2.Download the application 
-First download or clone the application file form [here] (https://github.com/NiryoRobotics/niryo_one_matlab.git)
+First download or clone the application file form [here](https://github.com/NiryoRobotics/niryo_one_matlab.git)
 ### 3.Getting started with the application 
 - For your first connection : 
 open niryo One Studio and follow the steps to connect Niryo one to the wifi network in order to connect your computer and your robot to the same network.
@@ -190,11 +190,11 @@ You can use calibrate Motors button to start calibrating motors.
 The application  will work for a few second before presenting you the results of trajectories on plot trajectory window.
 Choose the joint ( form joint 1 to joint 6) you want to plot and you will see a curve graph of the planned ,the real trajectory and the difference between them.
 
-![plot trajectory] (./screenshot/plot.JPG)
+![plot trajectory](./screenshot/plot.JPG)
 
 - If you want to export result, click export button , choose a location and a name of your text file. the trajectory will be saved in both a text and an excel file.
 
-![export] (./screenshot/export.JPG)
+![export](./screenshot/export.JPG)
 
 -  You can import a saved trajectory data by clicking on import button and choosing an excel file.
 -  Click Hardware Status button to get updated hardware status.
