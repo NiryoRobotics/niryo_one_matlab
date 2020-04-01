@@ -1,9 +1,8 @@
 # **Niryo One - MATLAB interface**
 
-This repository has MATLAB code and functions to execute Niryo One - MATLAB interface.
-
+This repository contains resources of Niryo One Matlab Interface. This interface has some similar functions as[Niryo One Studio](https://niryo.com/download/)
+This interface enables you to **exchange data between ROS-Niryo One and Matlab**.
 This interface connects Niryo-one to MATLAB to analyze differences between planned trajectory and executed trajectory.
-
 In this application, we can compare  between the 2 differnet trajectories by ploting them as shown below.
 
 ![Matlab graph](./screenshot/trajectories_graphs.png)
