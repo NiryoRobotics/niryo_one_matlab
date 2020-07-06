@@ -50,12 +50,11 @@ Then Choose Robotics System Toolbox Interface for ROS Custom Messages and click 
 
 ###### 1.2.2 Create Custom Messages from ROS Package 
 You can follow this [tutorial](https://fr.mathworks.com/help/robotics/ug/create-custom-messages-from-ros-package.html).
+In order to add niryo one msgs , 
+-  **In windows** , clone [niryo one ros](https://github.com/NiryoRobotics/niryo_one_ros.git) and note the folderpath.
+- **In Ubnutu**, If you already install Niryo One ROS packages on your computer, you just have to note the folder path.
 
- **In windows** , clone [niryo one ros](https://github.com/NiryoRobotics/niryo_one_ros.git) and note the folderpath
-
-**In Ubnutu**, If you already install Niryo One ROS packages on your computer, you just have to note the folder path.
-In **MATLAB** command window run:
-
+Now , in **MATLAB** command window run:
 
 >folderpath = your_folder_path
 
